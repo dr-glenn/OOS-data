@@ -47,7 +47,7 @@ app.layout = html.Div(children=[
     '''),
     # Next Div contains two graphs side-by-side, using display="inline-block"
     html.Div(children=[
-    
+        # XY graph of wind speed, time on x-axis
         html.Span(dcc.Graph(
                 id='wind-date-plot',
                 figure={
@@ -58,7 +58,7 @@ app.layout = html.Div(children=[
             ),
             style={"display":"inline-block","width":"60%"}
         ),
-
+        # polar plot of wind speed and direction
         html.Span(dcc.Graph(
                 id='wind-dir-plot',
                 figure={
