@@ -7,6 +7,8 @@ import pandas as pd
 
 # Dash callbacks: https://dash.plot.ly/getting-started-part-2
 
+# wind direction polar plot with dcc: https://github.com/plotly/dash-sample-apps/blob/master/apps/dash-wind-streaming/app.py
+
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 datafile = 'data/oosdata.2020'
@@ -46,10 +48,6 @@ app.layout = html.Div(children=[
     dcc.Graph(
         id='wind-date-plot',
         figure={
-            'data': [
-                {'x': df.index, 'y': df['wind_speed'], 'type': 'line', 'name': u'wind speed'},
-                {'x': df.index, 'y': df['wind_gust'], 'type': 'line', 'name': u'wind gust'},
-            ],
             'layout': {
                 'title': 'Winds from Oliver Observing Station'
             }
@@ -80,9 +78,9 @@ def update_figure(selected_day):
 
     return {
         'data': traces,
-        'layout': dict(title='Winds selected'),
+        'layout': dict(title='Wind Speed'),
     }
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8051)
+    app.run_server(debug=True, port=8050)
