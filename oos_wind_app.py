@@ -4,6 +4,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import pandas as pd
+import datetime as dt
 
 # Dash callbacks: https://dash.plot.ly/getting-started-part-2
 
@@ -14,10 +15,15 @@ app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 
 datafile = 'data/oosdata.2020'
 dat_names = ['wdate','wind_dir','wind_speed','wind_gust','col5','humidity','col7','temp_out','col9','col10']
+# TODO: can I read just a select date range?
 df = pd.read_csv(datafile, sep=' ',names=dat_names,index_col=0,parse_dates=True)
 df = df.drop_duplicates()
 #df.describe()
 df.index = pd.to_datetime(df.index,format="%Y%m%d%H%M")
+
+# TODO: save the full index range
+# TODO: make a range slider that defaults to one day selection of most recent 24 hours
+# TODO: make a range slider to select hours, esp. for wind_dir polar plot
 
 # get Dataframe index numbers for first record of each day
 def get_day_indices(df):
@@ -59,7 +65,7 @@ app.layout = html.Div(children=[
             style={"display":"inline-block","width":"60%"}
         ),
         # polar plot of wind speed and direction
-        html.Span(dcc.Graph(
+        html.Span([dcc.Graph(
                 id='wind-dir-plot',
                 figure={
                     'layout': {
@@ -67,6 +73,15 @@ app.layout = html.Div(children=[
                     }
                 }
             ),
+            dcc.Slider(
+                id='hour-slider',
+                min=0,
+                max=23,
+                value=0,
+                marks={str(hour): str(hour) for hour in range(0,23,2)},
+                step=None
+            )],
+            
             style=dict(display="inline-block",width="30%")
         ),
         ]
@@ -81,7 +96,7 @@ app.layout = html.Div(children=[
             marks={i: 'Day {}'.format(i) if i == 0 else str(i) for i in range(len(day_marks))},
             
         ),
-        style={"width":"80%","margin":"auto"}
+        style={"width":"80%","margin-top":"30px","margin-left":"auto","margin-right":"auto"}
     ),
 ])
 
@@ -103,9 +118,17 @@ def update_wind_speed_figure(selected_day):
 
 @app.callback(
     Output('wind-dir-plot', 'figure'),
-    [Input('wind-date-slider', 'value')])
-def update_wind_dir_figure(selected_day):
+    [Input('wind-date-slider', 'value'),
+     Input('hour-slider','value')])
+def update_wind_dir_figure(selected_day, selected_hour):
     f_df = df[day_marks[selected_day][1]:day_marks[selected_day+1][1]]
+    date0 = f_df.index[0]   # it's a datetime
+    hour0 = dt.timedelta(hours=selected_hour)
+    h1 = selected_hour+4 if selected_hour <= 20 else 24
+    hour1 = dt.timedelta(hours=h1)
+    #f_df = f_df[f_df.index <= date0+hour1]
+    #f_df = f_df[f_df.index >= date0 and f_df.index <= date0+hour1]
+    f_df = f_df.loc[date0+hour0 : date0+hour1]
     winds = f_df.loc[df['wind_dir'] != 359.0][['wind_dir','wind_speed']]
     val = winds["wind_speed"]
     direction = winds["wind_dir"]
@@ -126,11 +149,11 @@ def update_wind_dir_figure(selected_day):
         paper_bgcolor=app_color["graph_bg"],
         font={"color": "#fff"},
         autosize=False,
-        polar={
-            "bgcolor": app_color["graph_line"],
-            "radialaxis": {"range": [0, 40], "angle": 45, "dtick": 10},
-            "angularaxis": {"showline": False, "tickcolor": "white"},
-        },
+        polar=dict(
+            bgcolor=app_color["graph_line"],
+            radialaxis=dict(range=[0, 40], angle=0, dtick=10),
+            angularaxis=dict(showline=False, tickcolor="white",rotation=90,direction='clockwise'),
+        ),
         showlegend=False,
         title='Wind Direction',
     )
