@@ -20,8 +20,18 @@ df = pd.read_csv(datafile, sep=' ',names=dat_names,index_col=0,parse_dates=True)
 df = df.drop_duplicates()
 #df.describe()
 df.index = pd.to_datetime(df.index,format="%Y%m%d%H%M")
+# the full index range
+date_limits = [df.index.min(),df.index.max()]
+# start with range slider of last 30 days
+date_range = date_limits[1] - date_limits[0]
+date1 = date_limits[1]
+date0 = date_limits[1] - dt.timedelta(days=30) if date_range > dt.timedelta(days=30) else date_limits[0]
 
-# TODO: save the full index range
+df30 = df.loc[date0 : date1]
+
+# TODO: I can select specific date like this: df.loc['2020-02-06'], even if the index contains HHMMSS.
+# TODO: How to select a range of dates?
+
 # TODO: make a range slider that defaults to one day selection of most recent 24 hours
 # TODO: make a range slider to select hours, esp. for wind_dir polar plot
 
@@ -82,19 +92,21 @@ app.layout = html.Div(children=[
                 step=None
             )],
             
-            style=dict(display="inline-block",width="30%")
+            style=dict(display="inline-block",width="25%")
         ),
         ]
     ),
     
     html.Div(
+        # date slider sits underneath the wind-speed and wind-dir plots
         dcc.Slider(
             id='wind-date-slider',
             min = 0,
             max = len(day_marks)-2,    # -2 because we cannot select last date as start point
             value = 0,
-            marks={i: 'Day {}'.format(i) if i == 0 else str(i) for i in range(len(day_marks))},
-            
+            #marks={i: 'Day {}'.format(i) if i == 0 else str(i) for i in range(0,len(day_marks))},
+            marks={i: {'label':str(dm[0]),'style':{'transform':'rotate(40deg)'}} for i,dm in enumerate(day_marks) if i%2 == 0},
+            # transform: rotate(20deg)
         ),
         style={"width":"80%","margin-top":"30px","margin-left":"auto","margin-right":"auto"}
     ),
@@ -106,6 +118,7 @@ app.layout = html.Div(children=[
     [Input('wind-date-slider', 'value')])
 def update_wind_speed_figure(selected_day):
     f_df = df[day_marks[selected_day][1]:day_marks[selected_day+1][1]]
+    #f_df = df30[day_marks[selected_day].key()]
     traces = []
     traces.append(dict(x=f_df.index,y=f_df['wind_speed'],type='line',name=u'wind_speed'))
     traces.append(dict(x=f_df.index,y=f_df['wind_gust'],type='line',name=u'wind_gust'))
