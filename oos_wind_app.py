@@ -77,11 +77,25 @@ app.layout = html.Div(children=[
     # Next Div contains two graphs side-by-side, using display="inline-block"
     html.Div(children=[
         # XY graph of wind speed, time on x-axis
-        html.Span(
+        html.Span([
             dcc.Graph(
                 id='wind-date-plot',
             ),
-            style={"display":"inline-block","width":"60%"}
+            html.Div(
+                # date slider sits underneath the wind-speed plot
+                dcc.Slider(
+                    id='wind-date-slider',
+                    min = 0,
+                    max = len(day_list)-2,    # -2 because we cannot select last date as start point
+                    value = 0,
+                    #marks={i: {'label':str(dm),'style':{'transform':'rotate(40deg) translate(0px,20px)'}} for i,dm in enumerate(day_list) if i%2 == 0},
+                    marks={i: {'label':str(dm),'style':{'transform':'rotate(-40deg) translate(-40px,-20px)'}} for i,dm in enumerate(day_list) if i%2 == 0},
+                    dots=True,
+                    # transform: rotate(20deg)
+                ),
+                style={'width':"70%","margin-left":"100px",}
+            )],
+            style={"display":"inline-block","width":"60%"},
         ),
         # polar plot of wind speed and direction
         html.Span([
@@ -99,26 +113,12 @@ app.layout = html.Div(children=[
                 ),
                 style={'margin-top':'20px'},
             )],
-            
             style=dict(display="inline-block",width="20%")
         ),
-        ]
+        ],
+        style={"margin-bottom":"60px",}
     ),
     
-    html.Div(
-        # date slider sits underneath the wind-speed and wind-dir plots
-        dcc.Slider(
-            id='wind-date-slider',
-            min = 0,
-            max = len(day_list)-2,    # -2 because we cannot select last date as start point
-            value = 0,
-            #marks={i: {'label':str(dm),'style':{'transform':'rotate(40deg) translate(0px,20px)'}} for i,dm in enumerate(day_list) if i%2 == 0},
-            marks={i: {'label':str(dm),'style':{'transform':'rotate(-40deg) translate(-40px,-20px)'}} for i,dm in enumerate(day_list) if i%2 == 0},
-            dots=True,
-            # transform: rotate(20deg)
-        ),
-        style={"width":"40%","margin-top":"0px","margin-left":"10%","margin-bottom":"50px"}
-    ),
     # Second row of graphs
     html.Div(children=[
         html.Span(
