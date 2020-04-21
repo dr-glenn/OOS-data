@@ -65,8 +65,8 @@ def gen_date_list(date0,date1):
 
 day_list = gen_date_list(date0,date1)
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-#app = dash.Dash(__name__)
+#app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 
 app.layout = html.Div(children=[
     html.H1(children='OOS Weather'),
