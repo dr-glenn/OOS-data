@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -13,7 +14,9 @@ import datetime as dt
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 
-datafile = 'data/oosdata.2020'
+here_dir = os.path.dirname(__file__)
+#datafile = '/home/jkhyrsmy/pyapps/OOS-data/data/oosdata.2020'
+datafile = os.path.join(here_dir, 'data/oosdata.2020')
 dat_names = ['wdate','wind_dir','wind_speed','wind_gust','col5','humidity','col7','temp_out','col9','col10']
 # TODO: can I read just a select date range?
 df = pd.read_csv(datafile, sep=' ',names=dat_names,index_col=0,parse_dates=True)
@@ -69,11 +72,15 @@ day_list = gen_date_list(date0,date1)
 app = dash.Dash(__name__)
 
 app.layout = html.Div(children=[
-    html.H1(children='OOS Weather'),
-
-    html.Div(children='''
-        Built with Dash, a web app framework for Python
-    '''),
+    html.Div([
+        html.H1(children='OOS Weather',style={'text-align':'left','margin-left':'10px','float':'left'}),
+        html.H2(children='(Built with Dash, a web app framework for Python)',
+            style={'text-align':'right','margin-right':'10px','float':'right'},
+            ),
+        ],
+    ),
+    # need to clear styles or next Div is messed up
+    html.Hr(style={'clear':'both'}),
     # Next Div contains two graphs side-by-side, using display="inline-block"
     html.Div(children=[
         # XY graph of wind speed, time on x-axis
@@ -93,8 +100,10 @@ app.layout = html.Div(children=[
                     dots=True,
                     # transform: rotate(20deg)
                 ),
+                # style for Div that contains Slider
                 style={'width':"70%","margin-left":"100px",}
             )],
+            # style for Span that contains Graph and Slider
             style={"display":"inline-block","width":"60%"},
         ),
         # polar plot of wind speed and direction
@@ -111,12 +120,15 @@ app.layout = html.Div(children=[
                     marks={str(hour): str(hour) for hour in range(0,23,2)},
                     step=None
                 ),
+                # style for Div that contains Slider
                 style={'margin-top':'20px'},
             )],
+            # style for Span that contains Graph and Slider
             style=dict(display="inline-block",width="20%")
         ),
         ],
-        style={"margin-bottom":"60px",}
+        # style for Div that contains both wind speed and wind direction graphs
+        style={"width":"100%","margin-bottom":"60px",}
     ),
     
     # Second row of graphs
@@ -125,13 +137,13 @@ app.layout = html.Div(children=[
             dcc.Graph(
                 id='temp-out',
             ),
-            style={'display':'inline-block'},
+            style={'width':'40%','display':'inline-block'},
         ),
         html.Span(
             dcc.Graph(
                 id='rel-hum',
             ),
-            style={'display':'inline-block'},
+            style={'width':'40%','display':'inline-block'},
         ),
         ]
     ),
@@ -149,7 +161,7 @@ def update_wind_speed_figure(selected_day):
 
     return {
         'data': traces,
-        'layout': dict(title='Wind Speed (every 5 minutes)'),
+        'layout': dict(title={'text':'Wind Speed (every 5 minutes)','y':'0.8'}),
     }
 
 @app.callback(
@@ -161,7 +173,7 @@ def update_temp_out_figure(selected_day):
     traces.append(dict(x=f_df.index,y=f_df['temp_out'],type='line',name=u'temperature'))
     return {
         'data': traces,
-        'layout': dict(title='Temperature Outside', height=400),
+        'layout': dict(title={'text':'Temperature Outside','y':'0.8'}, height=400),
     }
 
 @app.callback(
@@ -174,7 +186,7 @@ def update_rel_hum_figure(selected_day):
 
     return {
         'data': traces,
-        'layout': dict(title='Relative Humidity', height=400),
+        'layout': dict(title={'text':'Relative Humidity','y':'0.8'}, height=400),
     }
 
 
@@ -230,4 +242,19 @@ def update_wind_dir_figure(selected_day, selected_hour):
     }
 
 if __name__ == '__main__':
+    # when running as development server from comand line
+    app.config.update({
+        'url_base_pathname':'/oos_wind/',
+        'routes_pathname_prefix':'/oos_wind/',
+        'requests_pathname_prefix':'/oos_wind/',
+    })
+    server = app.server
     app.run_server(debug=True, port=8050)
+else:
+    # when running by wsgi script
+    app.config.update({
+        'url_base_pathname':'/OOS-data/',
+        'routes_pathname_prefix':'/OOS-data/',
+        'requests_pathname_prefix':'/OOS-data/',
+    })
+    server = app.server
