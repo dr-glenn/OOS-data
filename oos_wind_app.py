@@ -9,7 +9,8 @@ import datetime as dt
 import logging
 import logging.handlers
 # log files are max size 50K, then rollover to 5 backups
-handler = logging.handlers.RotatingFileHandler('/home/jkhyrsmy/pyapps/OOS-data/oos_wind_app.log', maxBytes=100000, backupCount=5)
+#handler = logging.handlers.RotatingFileHandler('/home/jkhyrsmy/pyapps/OOS-data/oos_wind_app.log', maxBytes=100000, backupCount=5)
+handler = logging.handlers.RotatingFileHandler('./oos_wind_app.log', maxBytes=100000, backupCount=5)
 formatter = logging.Formatter(fmt='%(asctime)s : %(message)s')    # defines the format of each logged message
 handler.setFormatter(formatter)
 # the root logger is inherited by all modules that are used in your program
@@ -43,7 +44,8 @@ app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 here_dir = os.path.dirname(__file__)
 datafile = os.path.join(here_dir, 'data/oosdata.2020')
 """
-datafile = '/home/weather/OOSwdata/OOSwdata.2020'
+#datafile = '/home/weather/OOSwdata/OOSwdata.2020'
+datafile = 'data/OOSwdata.2020'
 dat_names = ['wdate','wind_dir','wind_speed','wind_gust','col5','humidity','col7','temp_out','col9','col10']
 # TODO: can I read just a select date range?
 df = pd.read_csv(datafile, sep=' ',names=dat_names,index_col=0,parse_dates=True)
@@ -119,71 +121,78 @@ app.layout = html.Div(children=[
     # need to clear styles or next Div is messed up
     html.Hr(style={'clear':'both'}),
     # Next Div contains two graphs side-by-side, using display="inline-block"
-    html.Div(children=[
-        # XY graph of wind speed, time on x-axis
-        html.Span([
-            dcc.Graph(
-                id='wind-date-plot',
-                #figure=wind_date_fig
-            ),
-            html.Div(
-                # date slider sits underneath the wind-speed plot
-                dcc.Slider(
-                    id='wind-date-slider',
-                    included = False,
-                    min = 0,
-                    max = len(day_list)-1,
-                    value = len(day_list)-1,    # start at last day
-                    marks={i: {'label':str(dm),'style':{'transform':'rotate(-40deg) translate(-40px,-20px)'}} for i,dm in enumerate(day_list) if i%2 == 0},
-                    dots=True,
+    html.Div(
+        # style for Div that contains both wind speed and wind direction graphs
+        # margin-bottom required for labels on date selector slider
+        style={"width":"100%","height":"40vh","margin-bottom":"60px"},
+        children=[
+            # XY graph of wind speed, time on x-axis
+            html.Span([
+                dcc.Graph(
+                    id='wind-date-plot', style={'height':'350px'}
+                    #figure=wind_date_fig
                 ),
-                # style for Div that contains Slider
-                style={'width':"70%","margin-left":"100px",}
-            )],
+                html.Div(
+                    # date slider sits underneath the wind-speed plot
+                    dcc.Slider(
+                        id='wind-date-slider',
+                        included = False,
+                        min = 0,
+                        max = len(day_list)-1,
+                        value = len(day_list)-1,    # start at last day
+                        marks={i: {'label':str(dm),'style':{'transform':'rotate(-40deg) translate(-40px,-20px)'}} for i,dm in enumerate(day_list) if i%2 == 0},
+                        dots=True,
+                    ),
+                    # style for Div that contains Slider
+                    style={'width':"70%","margin-left":"100px",}
+                )
+            ],
             # style for Span that contains Graph and Slider
             style={"display":"inline-block","width":"60%"},
-        ),
-        # polar plot of wind speed and direction
-        html.Span([
-            dcc.Graph(
-                id='wind-dir-plot',
             ),
-            html.Div(
-                dcc.Slider(
-                    id='hour-slider',
-                    included = False,
-                    min=0,
-                    max=23,
-                    value=0,    # start at zero hour
-                    marks={str(hour): str(hour) for hour in range(0,23,2)},
-                    step=None
+            # polar plot of wind speed and direction with hour slider
+            html.Span(
+                # style for Span that contains Graph and Slider
+                style=dict(display="inline-block",width="30%"),
+                children=[
+                dcc.Graph(
+                    id='wind-dir-plot',style={'height':'350px'}
                 ),
-                # style for Div that contains Slider
-                style={'margin-top':'20px'},
-            )],
-            # style for Span that contains Graph and Slider
-            style=dict(display="inline-block",width="20%")
-        ),
+                html.Div(
+                    # style for Div that contains Slider
+                    style={'margin-top': '20px'},
+                    children=[
+                        dcc.Slider(
+                            #style={'height':'inherit'},
+                            id='hour-slider',
+                            included = False,
+                            min=0,
+                            max=23,
+                            value=0,    # start at zero hour
+                            marks={str(hour): str(hour) for hour in range(0,23,2)},
+                            step=None
+                        ),
+                    ],
+                )],
+            ),
         ],
-        # style for Div that contains both wind speed and wind direction graphs
-        style={"width":"100%","margin-bottom":"60px",}
     ),
     
     # Second row of graphs
-    html.Div(children=[
+    html.Div(style={"height":"30vh"},children=[
         html.Span(
             dcc.Graph(
-                id='temp-out',
+                id='temp-out', style={'height':'300px'}
             ),
             style={'width':'50%','display':'inline-block'},
         ),
         html.Span(
             dcc.Graph(
-                id='rel-hum',
+                id='rel-hum', style={'height':'300px'}
             ),
             style={'width':'50%','display':'inline-block'},
         ),
-        ]
+        ],
     ),
 ])
 
@@ -197,37 +206,10 @@ def update_wind_speed_figure(selected_day):
     traces = []
     traces.append(dict(x=f_df.index,y=f_df['wind_speed'],type='line',name=u'wind_speed'))
     traces.append(dict(x=f_df.index,y=f_df['wind_gust'],type='line',name=u'wind_gust'))
-
     return {
         'data': traces,
-        'layout': dict(height=400,title={'text':'Wind Speed (every 5 minutes)','y':'0.8'}),
+        'layout': dict(title={'text':'Wind Speed (every 5 minutes)','y':'0.8'}),
     }
-
-@app.callback(
-    Output('temp-out', 'figure'),
-    [Input('wind-date-slider', 'value')])
-def update_temp_out_figure(selected_day):
-    f_df = df30[str(date0+dt.timedelta(days=selected_day))]
-    traces = []
-    traces.append(dict(x=f_df.index,y=f_df['temp_out'],type='line',name=u'temperature'))
-    return {
-        'data': traces,
-        'layout': dict(title={'text':'Temperature Outside','y':'0.8'}, height=300),
-    }
-
-@app.callback(
-    Output('rel-hum', 'figure'),
-    [Input('wind-date-slider', 'value')])
-def update_rel_hum_figure(selected_day):
-    f_df = df30[str(date0+dt.timedelta(days=selected_day))]
-    traces = []
-    traces.append(dict(x=f_df.index,y=f_df['humidity'],type='line',name=u'humidity'))
-
-    return {
-        'data': traces,
-        'layout': dict(title={'text':'Relative Humidity','y':'0.8'}, height=300),
-    }
-
 
 @app.callback(
     Output('wind-dir-plot', 'figure'),
@@ -259,9 +241,9 @@ def update_wind_dir_figure(selected_day, selected_hour):
             marker=dict(color='yellow'),
         )
     ]
-
     layout = dict(
-        height=350, width=400,
+        #height=350, width=400,
+        #height="350",
         #plot_bgcolor=app_color["graph_bg"],
         paper_bgcolor=app_color["graph_bg"],
         font={"color": "#fff"},
@@ -274,19 +256,45 @@ def update_wind_dir_figure(selected_day, selected_hour):
         showlegend=False,
         title='Wind Direction (4 hours)',
     )
-
     return {
         'data': data,
         'layout': layout,
     }
 
+@app.callback(
+    Output('temp-out', 'figure'),
+    [Input('wind-date-slider', 'value')])
+def update_temp_out_figure(selected_day):
+    f_df = df30[str(date0+dt.timedelta(days=selected_day))]
+    traces = []
+    traces.append(dict(x=f_df.index,y=f_df['temp_out'],type='line',name=u'temperature'))
+    return {
+        'data': traces,
+        'layout': dict(title={'text':'Temperature Outside','y':'0.8'}),
+    }
+
+@app.callback(
+    Output('rel-hum', 'figure'),
+    [Input('wind-date-slider', 'value')])
+def update_rel_hum_figure(selected_day):
+    f_df = df30[str(date0+dt.timedelta(days=selected_day))]
+    traces = []
+    traces.append(dict(x=f_df.index,y=f_df['humidity'],type='line',name=u'humidity'))
+
+    return {
+        'data': traces,
+        'layout': dict(title={'text':'Relative Humidity','y':'0.8'},),
+    }
+
+
 if __name__ == '__main__':
-    # when running as development server from comand line
-    app.config.update({
-        'url_base_pathname':'/oos_wind/',
-        'routes_pathname_prefix':'/oos_wind/',
-        'requests_pathname_prefix':'/oos_wind/',
-    })
+    # when running as development server from command line
+    if False:
+        app.config.update({
+            'url_base_pathname':'/oos_wind/',
+            'routes_pathname_prefix':'/oos_wind/',
+            'requests_pathname_prefix':'/oos_wind/',
+        })
     server = app.server
     app.run_server(debug=True, port=8050)
 else:
