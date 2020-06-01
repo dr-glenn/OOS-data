@@ -111,92 +111,87 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP,])
 
 wind_date_fig = {'layout': dict(height=400,title={'text':'Wind Speed (every 5 minutes)','y':'0.8'})}
 
-app.layout = html.Div(children=[
-    html.Div([
-        html.H1(children='OOS Weather',style={'text-align':'left','margin-left':'10px','float':'left'}),
-        html.H2(children='(Built with Dash, a web app framework for Python)',
-            style={'text-align':'right','margin-right':'10px','float':'right'},
+row_heading = dbc.Row(children=[
+    dbc.Col(width=6, children=[html.H1('OOS Weather'),]),
+    dbc.Col(width=6, children=[html.H2('(Built with Dash, a web app framework for Python)'),]),
+    ],
+)
+
+# Next Div contains two graphs side-by-side, using display="inline-block"
+row1 = dbc.Row(
+    # style for Div that contains both wind speed and wind direction graphs
+    # margin-bottom required for labels on date selector slider
+    #style={"width": "100%", "height": "40vh", "margin-bottom": "60px"},
+    children=[
+        # XY graph of wind speed, time on x-axis
+        dbc.Col(width = 7, style={'height':'100%'}, children=[
+            dcc.Graph(
+                id='wind-date-plot',
+                style={'height': 'inherit'}
             ),
-        ],
-    ),
-    # need to clear styles or next Div is messed up
-    html.Hr(style={'clear':'both'}),
-    # Next Div contains two graphs side-by-side, using display="inline-block"
-    html.Div(
-        # style for Div that contains both wind speed and wind direction graphs
-        # margin-bottom required for labels on date selector slider
-        style={"width":"100%","height":"40vh","margin-bottom":"60px"},
-        children=[
-            # XY graph of wind speed, time on x-axis
-            html.Span([
-                dcc.Graph(
-                    id='wind-date-plot', style={'height':'350px'}
-                    #figure=wind_date_fig
+            html.Div(
+                # date slider sits underneath the wind-speed plot
+                dcc.Slider(
+                    id='wind-date-slider',
+                    included=False,
+                    min=0,
+                    max=len(day_list) - 1,
+                    value=len(day_list) - 1,  # start at last day
+                    marks={i: {'label': str(dm), 'style': {'transform': 'rotate(-40deg) translate(-40px,-20px)'}} for
+                           i, dm in enumerate(day_list) if i % 2 == 0},
+                    dots=True,
                 ),
-                html.Div(
-                    # date slider sits underneath the wind-speed plot
-                    dcc.Slider(
-                        id='wind-date-slider',
-                        included = False,
-                        min = 0,
-                        max = len(day_list)-1,
-                        value = len(day_list)-1,    # start at last day
-                        marks={i: {'label':str(dm),'style':{'transform':'rotate(-40deg) translate(-40px,-20px)'}} for i,dm in enumerate(day_list) if i%2 == 0},
-                        dots=True,
-                    ),
-                    # style for Div that contains Slider
-                    style={'width':"70%","margin-left":"100px",}
-                )
-            ],
+                # style for Div that contains Slider
+                style={'width': "70%", "margin-left": "100px", }
+            )
+        ],
             # style for Span that contains Graph and Slider
-            style={"display":"inline-block","width":"60%"},
-            ),
-            # polar plot of wind speed and direction with hour slider
-            html.Span(
-                # style for Span that contains Graph and Slider
-                style=dict(display="inline-block",width="30%"),
-                children=[
+            #style={"display": "inline-block", "width": "60%"},
+        ),
+        # polar plot of wind speed and direction with hour slider
+        dbc.Col(
+            # style for Span that contains Graph and Slider
+            #style=dict(display="inline-block", width="30%"),
+            width = 3, style={'height':'100%'},
+            children=[
                 dcc.Graph(
-                    id='wind-dir-plot',style={'height':'350px'}
+                    id='wind-dir-plot',
+                    style={'height': 'inherit'}
                 ),
                 html.Div(
                     # style for Div that contains Slider
                     style={'margin-top': '20px'},
                     children=[
                         dcc.Slider(
-                            #style={'height':'inherit'},
+                            # style={'height':'inherit'},
                             id='hour-slider',
-                            included = False,
+                            included=False,
                             min=0,
                             max=23,
-                            value=0,    # start at zero hour
-                            marks={str(hour): str(hour) for hour in range(0,23,2)},
+                            value=0,  # start at zero hour
+                            marks={str(hour): str(hour) for hour in range(0, 23, 2)},
                             step=None
                         ),
                     ],
                 )],
-            ),
-        ],
-    ),
-    
-    # Second row of graphs
-    html.Div(style={"height":"30vh"},children=[
-        html.Span(
-            dcc.Graph(
-                id='temp-out', style={'height':'300px'}
-            ),
-            style={'width':'50%','display':'inline-block'},
         ),
-        html.Span(
-            dcc.Graph(
-                id='rel-hum', style={'height':'300px'}
-            ),
-            style={'width':'50%','display':'inline-block'},
-        ),
-        ],
-    ),
-])
+    ], className='mh-75'
+)
 
+# Second row of graphs
+row2 = dbc.Row(children=[
+        dbc.Col(width=5, children=[dcc.Graph(id='temp-out',style={'height':'inherit'}),]),
+        dbc.Col(width=5, children=[dcc.Graph(id='rel-hum',style={'height':'inherit'}),]),
+        ], className='mh-25')
+
+app.layout = dbc.Container(fluid=True,
+    #style={'height':'80vh','width':'100%'},
+    children=[row_heading,
+        # need to clear styles or next Div is messed up
+        html.Hr(style={'clear':'both'}),
+        row1,
+        row2
+])
 
 @app.callback(
     Output('wind-date-plot', 'figure'),
@@ -243,9 +238,6 @@ def update_wind_dir_figure(selected_day, selected_hour):
         )
     ]
     layout = dict(
-        #height=350, width=400,
-        #height="350",
-        #plot_bgcolor=app_color["graph_bg"],
         paper_bgcolor=app_color["graph_bg"],
         font={"color": "#fff"},
         autosize=False,
@@ -281,7 +273,6 @@ def update_rel_hum_figure(selected_day):
     f_df = df30[str(date0+dt.timedelta(days=selected_day))]
     traces = []
     traces.append(dict(x=f_df.index,y=f_df['humidity'],type='line',name=u'humidity'))
-
     return {
         'data': traces,
         'layout': dict(title={'text':'Relative Humidity','y':'0.8'},),
@@ -289,7 +280,8 @@ def update_rel_hum_figure(selected_day):
 
 
 if __name__ == '__main__':
-    # when running as development server from command line
+    # when running as development server from command line on your desktop, set to False
+    # if running local host on remote Apache with proxy, you need to set True
     if False:
         app.config.update({
             'url_base_pathname':'/oos_wind/',
@@ -298,7 +290,7 @@ if __name__ == '__main__':
         })
     server = app.server
     app.run_server(debug=True, port=8050)
-else:
+else:   # not __main__
     # when running by wsgi script
     app.config.update({
         'url_base_pathname':'/OOS-data/',

@@ -1,0 +1,84 @@
+2020-05-30 10:32:37,193 : start
+2020-05-30 10:32:38,659 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-30 10:32:38,659 : date range: 2020-03-02 to 2020-03-22
+2020-05-30 10:32:38,660 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-30 10:32:38,660 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-30 10:32:38,671 : Running on http://127.0.0.1:8050/
+2020-05-30 10:32:38,671 : Debugger PIN: 213-313-640
+2020-05-30 10:32:40,896 : start
+2020-05-30 10:32:42,350 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-30 10:32:42,350 : date range: 2020-03-02 to 2020-03-22
+2020-05-30 10:32:42,351 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-30 10:32:42,351 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-30 10:32:42,362 : Running on http://127.0.0.1:8050/
+2020-05-30 10:32:42,362 : Debugger PIN: 277-257-641
+2020-05-30 10:33:16,746 : start
+2020-05-30 10:33:18,231 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-30 10:33:18,231 : date range: 2020-03-02 to 2020-03-22
+2020-05-30 10:33:18,233 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-30 10:33:18,233 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-30 10:33:18,244 : Running on http://127.0.0.1:8050/
+2020-05-30 10:33:18,244 : Debugger PIN: 275-801-183
+2020-05-30 10:52:23,986 : start
+2020-05-30 10:52:25,470 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-30 10:52:25,470 : date range: 2020-03-02 to 2020-03-22
+2020-05-30 10:52:25,471 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-30 10:52:25,471 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-30 10:52:25,490 : Running on http://127.0.0.1:8050/
+2020-05-30 10:52:25,490 : Debugger PIN: 443-219-085
+2020-05-30 10:53:01,935 : start
+2020-05-30 10:53:03,427 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-30 10:53:03,427 : date range: 2020-03-02 to 2020-03-22
+2020-05-30 10:53:03,428 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-30 10:53:03,428 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-30 10:53:03,439 : Running on http://127.0.0.1:8050/
+2020-05-30 10:53:03,439 : Debugger PIN: 084-070-526
+2020-05-30 10:53:35,909 : start
+2020-05-30 10:53:37,371 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-30 10:53:37,371 : date range: 2020-03-02 to 2020-03-22
+2020-05-30 10:53:37,372 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-30 10:53:37,372 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-30 10:53:37,382 : Running on http://127.0.0.1:8050/
+2020-05-30 10:53:37,383 : Debugger PIN: 810-128-747
+2020-05-31 16:50:36,700 : start
+2020-05-31 16:50:38,410 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-31 16:50:38,411 : date range: 2020-03-02 to 2020-03-22
+2020-05-31 16:50:38,412 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-31 16:50:38,412 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-31 16:50:38,423 : Running on http://127.0.0.1:8050/
+2020-05-31 16:50:38,423 : Debugger PIN: 694-541-761
+2020-05-31 16:50:40,885 : start
+2020-05-31 16:50:43,195 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-31 16:50:43,195 : date range: 2020-03-02 to 2020-03-22
+2020-05-31 16:50:43,197 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-31 16:50:43,197 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-31 16:50:43,213 : Running on http://127.0.0.1:8050/
+2020-05-31 16:50:43,213 : Debugger PIN: 134-684-827
+2020-05-31 16:52:48,284 : start
+2020-05-31 16:52:50,025 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-31 16:52:50,025 : date range: 2020-03-02 to 2020-03-22
+2020-05-31 16:52:50,027 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-31 16:52:50,027 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-31 16:52:50,041 : Running on http://127.0.0.1:8050/
+2020-05-31 16:52:50,041 : Debugger PIN: 597-208-655
+2020-05-31 20:13:47,273 : start
+2020-05-31 20:13:48,916 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-31 20:13:48,916 : date range: 2020-03-02 to 2020-03-22
+2020-05-31 20:13:48,917 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-31 20:13:48,917 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-31 20:13:48,929 : Running on http://127.0.0.1:8050/
+2020-05-31 20:13:48,929 : Debugger PIN: 932-449-051
+2020-05-31 20:14:24,919 : start
+2020-05-31 20:14:26,712 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-31 20:14:26,712 : date range: 2020-03-02 to 2020-03-22
+2020-05-31 20:14:26,714 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-31 20:14:26,714 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-31 20:14:26,724 : Running on http://127.0.0.1:8050/
+2020-05-31 20:14:26,725 : Debugger PIN: 103-259-813
+2020-05-31 20:15:56,287 : start
+2020-05-31 20:15:57,987 : data index range: 2020-01-01 00:01:00 to 2020-03-22 17:05:00
+2020-05-31 20:15:57,987 : date range: 2020-03-02 to 2020-03-22
+2020-05-31 20:15:57,989 : df30 min/max = 2020-01-01 00:01:00, 2020-03-22 17:05:00
+2020-05-31 20:15:57,990 : day_list: [datetime.date(2020, 3, 2), datetime.date(2020, 3, 3), datetime.date(2020, 3, 4), datetime.date(2020, 3, 5), datetime.date(2020, 3, 6), datetime.date(2020, 3, 7), datetime.date(2020, 3, 8), datetime.date(2020, 3, 9), datetime.date(2020, 3, 10), datetime.date(2020, 3, 11), datetime.date(2020, 3, 12), datetime.date(2020, 3, 13), datetime.date(2020, 3, 14), datetime.date(2020, 3, 15), datetime.date(2020, 3, 16), datetime.date(2020, 3, 17), datetime.date(2020, 3, 18), datetime.date(2020, 3, 19), datetime.date(2020, 3, 20), datetime.date(2020, 3, 21), datetime.date(2020, 3, 22)]
+2020-05-31 20:15:58,002 : Running on http://127.0.0.1:8050/
+2020-05-31 20:15:58,002 : Debugger PIN: 606-411-856
