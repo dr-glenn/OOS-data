@@ -7,55 +7,90 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import pandas as pd
 import datetime as dt
-import logging
-import logging.handlers
-# log files are max size 50K, then rollover to 5 backups
-#handler = logging.handlers.RotatingFileHandler('/home/jkhyrsmy/pyapps/OOS-data/oos_wind_app.log', maxBytes=100000, backupCount=5)
-handler = logging.handlers.RotatingFileHandler('./oos_wind_app.log', maxBytes=100000, backupCount=5)
-formatter = logging.Formatter(fmt='%(asctime)s : %(message)s')    # defines the format of each logged message
-handler.setFormatter(formatter)
-# the root logger is inherited by all modules that are used in your program
-root_logger = logging.getLogger()
-root_logger.setLevel(logging.INFO)    # alternative, use string 'INFO'
-root_logger.addHandler(handler)
-
-# logger for this module
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-logger.info('start')
+from io import StringIO
 
 # Dash callbacks: https://dash.plot.ly/getting-started-part-2
 # wind direction polar plot with dcc: https://github.com/plotly/dash-sample-apps/blob/master/apps/dash-wind-streaming/app.py
-
-"""
-TODO:
-- style so that graphs are nicer size
-- style so that graphs don't have so much border space
-- radio selector for winds displayed on polar chart: wind or gust
-- selector for number of hours to display on polar plot
-- date-time range slider so that user can contorl time span on x-axis
-"""
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
-
-"""
-here_dir = os.path.dirname(__file__)
-datafile = os.path.join(here_dir, 'data/oosdata.2020')
-"""
-#datafile = '/home/weather/OOSwdata/OOSwdata.2020'
-datafile = 'data/OOSwdata.2020'
+datafile = 'ex.dat'
 dat_names = ['wdate','wind_dir','wind_speed','wind_gust','col5','humidity','col7','temp_out','col9','col10']
-# TODO: can I read just a select date range?
-df = pd.read_csv(datafile, sep=' ',names=dat_names,index_col=0,parse_dates=True)
+TESTDATA = StringIO("""
+202003190115 359.000 0.000 0.000 100.000 97.000 55.500 27.700 24.986 9.120
+202003190235 359.000 0.000 0.000 100.000 97.000 55.100 28.100 24.986 9.120
+202003190350 359.000 0.000 0.000 100.000 97.000 54.800 28.500 24.986 9.120
+202003190515 359.000 5.000 8.000 100.000 97.000 54.500 28.400 24.986 9.120
+202003190635 359.000 0.000 0.000 100.000 97.000 54.000 28.000 24.986 9.120
+202003190750 359.000 0.000 0.000 100.000 97.000 53.100 27.700 24.986 9.120
+202003190915 359.000 0.000 0.000 100.000 97.000 53.300 29.000 24.986 9.120
+202003191035 359.000 0.000 0.000 100.000 98.000 54.600 31.300 24.986 9.120
+202003191150 241.000 0.000 0.000 100.000 98.000 56.100 32.600 24.986 9.120
+202003191315 359.000 0.000 0.000 100.000 97.000 58.700 34.600 24.986 9.120
+202003191435 359.000 0.000 0.000 100.000 97.000 59.700 33.500 24.986 9.120
+202003191550 290.000 0.000 0.000 100.000 98.000 59.700 33.200 24.986 9.130
+202003191715 15.000 0.000 0.000 100.000 98.000 59.600 32.600 24.986 9.160
+202003191835 23.000 0.000 0.000 100.000 98.000 59.600 33.200 24.986 9.160
+202003191950 23.000 0.000 0.000 100.000 98.000 59.100 32.800 24.986 9.160
+202003192115 18.000 0.000 0.000 100.000 98.000 58.400 32.100 24.986 9.160
+202003192235 22.000 0.000 0.000 100.000 98.000 57.700 32.500 24.986 9.160
+202003192350 37.000 0.000 0.000 100.000 98.000 57.100 32.100 24.986 9.170
+202003200115 41.000 0.000 0.000 100.000 98.000 56.700 31.600 24.986 9.170
+202003200235 89.000 0.000 0.000 100.000 98.000 56.300 31.200 24.986 9.170
+202003200350 93.000 0.000 0.000 100.000 98.000 55.700 30.100 24.986 9.170
+202003200515 90.000 0.000 0.000 100.000 98.000 55.400 30.600 24.986 9.170
+202003200635 359.000 0.000 0.000 100.000 98.000 54.800 29.400 24.986 9.170
+202003200750 359.000 0.000 0.000 100.000 98.000 54.200 30.500 24.986 9.170
+202003200915 60.000 0.000 0.000 100.000 98.000 55.200 31.600 24.986 9.170
+202003201035 97.000 0.000 0.000 100.000 98.000 56.500 32.800 24.986 9.170
+202003201150 359.000 3.000 6.000 100.000 98.000 58.800 34.600 24.986 9.170
+202003201315 359.000 0.000 0.000 100.000 97.000 60.300 35.900 24.986 9.170
+202003201435 359.000 0.000 0.000 100.000 97.000 61.300 36.900 24.986 9.170
+202003201550 10.000 2.000 3.000 100.000 97.000 62.100 37.700 24.986 9.170
+202003201715 16.000 0.000 0.000 100.000 97.000 62.400 37.100 24.986 9.170
+202003201835 32.000 0.000 0.000 100.000 98.000 62.200 35.900 24.986 9.170
+202003201950 97.000 1.000 4.000 100.000 98.000 61.400 33.300 24.986 9.190
+202003202115 359.000 0.000 0.000 100.000 98.000 60.500 34.800 24.986 9.190
+202003202235 105.000 0.000 5.000 100.000 98.000 59.700 34.800 24.986 9.190
+202003202350 105.000 0.000 0.000 100.000 98.000 59.300 34.400 24.986 9.200
+202003210115 102.000 0.000 0.000 100.000 98.000 58.800 33.400 24.986 9.220
+202003210235 359.000 0.000 0.000 100.000 98.000 58.200 32.500 24.986 9.250
+202003210350 359.000 0.000 6.000 100.000 98.000 57.700 32.800 24.986 9.260
+202003210515 359.000 0.000 0.000 100.000 98.000 57.300 33.200 24.986 9.270
+202003210635 359.000 0.000 0.000 100.000 98.000 57.000 32.800 24.986 9.280
+202003210750 158.000 0.000 0.000 100.000 98.000 56.700 32.600 24.986 9.290
+202003210915 158.000 0.000 0.000 100.000 98.000 56.700 32.000 24.986 9.320
+202003211035 157.000 0.000 2.000 100.000 98.000 56.800 32.300 24.986 9.380
+202003211150 162.000 0.000 6.000 100.000 98.000 57.100 34.200 24.986 9.410
+202003211315 115.000 11.000 17.000 100.000 98.000 56.800 35.600 24.986 9.410
+202003211435 137.000 2.000 6.000 100.000 98.000 57.400 36.000 24.986 9.410
+202003211550 359.000 0.000 9.000 100.000 98.000 59.400 38.700 24.986 9.410
+202003211715 359.000 0.000 0.000 100.000 98.000 61.100 38.000 24.986 9.410
+202003211835 359.000 0.000 0.000 100.000 98.000 61.300 35.900 24.986 9.410
+202003211950 359.000 0.000 4.000 100.000 98.000 60.700 36.200 24.986 9.410
+202003212115 116.000 2.000 5.000 100.000 98.000 60.000 35.600 24.986 9.410
+202003212235 359.000 7.000 10.000 100.000 98.000 59.400 36.000 24.986 9.410
+202003212350 91.000 0.000 5.000 100.000 98.000 58.500 35.800 24.986 9.410
+202003220115 359.000 10.000 11.000 100.000 98.000 58.100 35.900 24.986 9.410
+202003220235 58.000 4.000 12.000 100.000 98.000 57.600 35.900 24.986 9.410
+202003220350 67.000 1.000 7.000 100.000 98.000 57.300 36.700 24.986 9.410
+202003220515 51.000 0.000 7.000 100.000 98.000 57.100 36.900 24.986 9.410
+202003220635 66.000 0.000 8.000 100.000 98.000 56.800 35.900 24.986 9.410
+202003220750 56.000 0.000 7.000 100.000 98.000 56.700 35.700 24.986 9.410
+202003220915 66.000 0.000 9.000 100.000 99.000 56.400 35.800 24.986 9.420
+202003221035 78.000 0.000 2.000 100.000 98.000 56.700 36.700 24.986 9.420
+202003221150 359.000 0.000 7.000 100.000 98.000 56.800 37.400 24.986 9.440
+202003221315 49.000 5.000 9.000 100.000 99.000 57.300 38.800 24.986 9.450
+202003221435 359.000 0.000 3.000 100.000 98.000 58.100 39.700 24.986 9.450
+202003221550 359.000 0.000 0.000 100.000 99.000 58.500 39.400 24.986 9.450
+202003221705 359.000 0.000 0.000 100.000 99.000 59.000 39.800 24.986 9.460
+""")
+df = pd.read_csv(TESTDATA, sep=' ',names=dat_names,index_col=0,parse_dates=True)
 df = df.drop_duplicates()
-#df.describe()
 df.index = pd.to_datetime(df.index,format="%Y%m%d%H%M")
 # the full index range
 date_limits = [df.index.min(),df.index.max()]
-logger.debug('data index range: %s to %s' %(str(df.index.min()),str(df.index.max())))
 
-# start with range slider of last N days
-N_DAYS = 20
+N_DAYS = 20     # start with range slider of last N days
 # use datetime, set earliest to 00:00 and latest to 23:59
 datetime1 = dt.datetime(date_limits[1].year, date_limits[1].month, date_limits[1].day,hour=23,minute=59)
 date1 = dt.date(date_limits[1].year, date_limits[1].month, date_limits[1].day)
@@ -64,32 +99,11 @@ date0 = dt.date(date_limits[0].year, date_limits[0].month, date_limits[0].day)
 date_range = date1 - date0  # integer number of days
 # date0 no more than N_DAYS before date1
 date0 = date0 if date_range <= dt.timedelta(days=N_DAYS) else date1 - dt.timedelta(days=N_DAYS)
-logger.debug('date range: %s to %s' %(str(date0),str(date1)))
 
 df30 = df.loc[datetime0 : datetime1]
-logger.debug('df30 min/max = %s, %s' %(str(df30.index.min()),str(df30.index.max())))
 
 # TODO: I can select specific date like this: df.loc['2020-02-06'], even if the index contains HHMMSS.
 # TODO: How to select a range of dates?
-
-# TODO: make a range slider that defaults to one day selection of most recent 24 hours
-# TODO: make a range slider to select hours, esp. for wind_dir polar plot
-
-# get Dataframe index numbers for first record of each day
-# NOTE: not used
-def get_day_indices(df):
-    '''
-    :return: days: list of tuple(str(YYYY-mm-DD),loc in df.index)
-    '''
-    days = []
-    dt_keys = {}
-    for dt0 in df.index:
-        dt_key = str(dt0.year) + "-" + str(dt0.month) + "-" + str(dt0.day)
-        if not dt_key in dt_keys:
-            # Store first index that matches yr-mon-day, skip all others
-            dt_keys[dt_key] = df.index.get_loc(dt0)
-            days.append((dt_key,dt_keys[dt_key]))
-    return days
 
 # generate a list of dates for the slider
 def gen_date_list(date0,date1):
@@ -101,29 +115,19 @@ def gen_date_list(date0,date1):
     return dlist
 
 day_list = gen_date_list(date0,date1)
-logger.debug('day_list: %s' %(str(day_list)))
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP,])
 
-wind_date_fig = {'layout': dict(height=400,title={'text':'Wind Speed (every 5 minutes)','y':'0.8'})}
-
-# not used:
-row_heading = dbc.Row(children=[
-    dbc.Col(width=6, children=[html.H1('OOS Weather'),]),
-    dbc.Col(width=6, children=[html.H2('(Built with Dash, a web app framework for Python)'),]),
-    ],
-)
-
-# Next Div contains two graphs side-by-side, using display="inline-block"
+# Next dbc.Row contains two graphs side-by-side
 row1 = dbc.Row(
     # style for Div that contains both wind speed and wind direction graphs
     # margin-bottom required for labels on date selector slider
     children=[
         # XY graph of wind speed, time on x-axis
-        dbc.Col(width = 7, style={'height':'100%'}, children=[
+        dbc.Col(width = 8, children=[
             dcc.Graph(
                 id='wind-date-plot',
-                style={'height': 'inherit'}
+                style={'height': '80%'}
             ),
             html.Div(
                 # date slider sits underneath the wind-speed plot
@@ -140,17 +144,17 @@ row1 = dbc.Row(
                 # style for Div that contains Slider
                 style={'width': "70%", "margin-left": "100px", }
             )
-        ],
+        ],className='h-100'
         ),
         # polar plot of wind speed and direction with hour slider
         dbc.Col(
             # style for Span that contains Graph and Slider
             #style=dict(display="inline-block", width="30%"),
-            width = 3, style={'height':'100%'},
+            width = 4,
             children=[
                 dcc.Graph(
                     id='wind-dir-plot',
-                    style={'height': 'inherit'}
+                    style={'height': '80%'}
                 ),
                 html.Div(
                     # style for Div that contains Slider
@@ -167,27 +171,24 @@ row1 = dbc.Row(
                             step=None
                         ),
                     ],
-                )],
+                )],className='h-100'
         ),
-    ], className='mh-75'
+    ], className='h-75'
 )
 
 # Second row of graphs
 row2 = dbc.Row(children=[
-        dbc.Col(width=5, children=[dcc.Graph(id='temp-out',style={'height':'inherit'}),]),
-        dbc.Col(width=5, children=[dcc.Graph(id='rel-hum',style={'height':'inherit'}),]),
-        ], className='mh-25')
-
-app.layout = dbc.Container(fluid=True,
-    children=[row1, row2],
-    )
+        dbc.Col(width=6, children=[dcc.Graph(id='temp-out',className='h-100')],className='h-100'),
+        dbc.Col(width=6, children=[dcc.Graph(id='rel-hum',className='h-100')],className='h-100'),
+        ], className='h-25')
+# must set fluid=True to occupy full width
+app.layout = dbc.Container(children=[row1, row2], fluid=True, className='vh-100')
 
 @app.callback(
     Output('wind-date-plot', 'figure'),
     [Input('wind-date-slider', 'value')])
 def update_wind_speed_figure(selected_day):
     f_df = df30[str(date0+dt.timedelta(days=selected_day))]
-    logger.debug('selected_day=%d, date=%s, rows=%d' %(selected_day,str(date0+dt.timedelta(days=selected_day)),f_df.shape[0]))
     traces = []
     traces.append(dict(x=f_df.index,y=f_df['wind_speed'],type='line',name=u'wind_speed'))
     traces.append(dict(x=f_df.index,y=f_df['wind_gust'],type='line',name=u'wind_gust'))
@@ -252,7 +253,7 @@ def update_temp_out_figure(selected_day):
     traces.append(dict(x=f_df.index,y=f_df['temp_out'],type='line',name=u'temperature'))
     return {
         'data': traces,
-        'layout': dict(title={'text':'Temperature Outside','y':'0.8'}),
+        'layout': dict(title={'text':'Temperature Outside','y':'0.5'}),
     }
 
 @app.callback(
@@ -264,19 +265,11 @@ def update_rel_hum_figure(selected_day):
     traces.append(dict(x=f_df.index,y=f_df['humidity'],type='line',name=u'humidity'))
     return {
         'data': traces,
-        'layout': dict(title={'text':'Relative Humidity','y':'0.8'},),
+        'layout': dict(title={'text':'Relative Humidity','y':'1.0'},),
     }
 
 
 if __name__ == '__main__':
-    # when running as development server from command line on your desktop, set to False
-    # if running local host on remote Apache with proxy, you need to set True
-    if False:
-        app.config.update({
-            'url_base_pathname':'/oos_wind/',
-            'routes_pathname_prefix':'/oos_wind/',
-            'requests_pathname_prefix':'/oos_wind/',
-        })
     server = app.server
     app.run_server(debug=True, port=8050)
 else:   # not __main__
